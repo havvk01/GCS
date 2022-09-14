@@ -29,15 +29,27 @@ class SecondViewController:UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchImage()
+            fetchImage()
+
     }
+    
+    
     
     fileprivate func fetchImage() {
         imageURL = URL(string: "https://www.dailyartmagazine.com/wp-content/uploads/2020/08/Henriette_ronner-knip_cat_nap-scaled-e1652946286135-1536x971.jpeg")
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
-        guard let url = imageURL, let imageData = try? Data(contentsOf: url) else { return }
-        self.image = UIImage(data: imageData)
+        
+        let queue = DispatchQueue.global(qos: .utility)
+        queue.async {
+            guard let url = self.imageURL, let imageData = try? Data(contentsOf: url) else { return }
+            DispatchQueue.main.async {
+                self.image = UIImage(data: imageData)
+            }
+            
+        }
+        
+        
 
         }
 }
