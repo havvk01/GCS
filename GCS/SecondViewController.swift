@@ -30,10 +30,37 @@ class SecondViewController:UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
             fetchImage()
+        delay(3) {
+            self.loginAlert()
+        }
+            
 
     }
     
+    fileprivate func delay(_ delay: Int, closure: @escaping () -> ()) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(delay)) {
+            closure()
+        }
+    }
     
+    fileprivate func loginAlert() {
+        let ac = UIAlertController(title: "Registration", message: "Push login and password", preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: "OK", style: .default)
+        let cancelAction = UIAlertAction(title: "cancel", style: .default)
+        ac.addAction(okAction)
+        ac.addAction(cancelAction)
+        
+        ac.addTextField { (usernameTF) in
+            usernameTF.placeholder = "Login"
+        }
+        ac.addTextField { (userPasswordTF) in
+            userPasswordTF.placeholder = "Password"
+            userPasswordTF.isSecureTextEntry = true
+        }
+        
+        self.present(ac, animated: true)
+    }
     
     fileprivate func fetchImage() {
         imageURL = URL(string: "https://www.dailyartmagazine.com/wp-content/uploads/2020/08/Henriette_ronner-knip_cat_nap-scaled-e1652946286135-1536x971.jpeg")
